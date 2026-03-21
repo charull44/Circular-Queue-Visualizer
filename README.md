@@ -34,7 +34,7 @@ An interactive and visually appealing Circular Queue (Ring Buffer) visualizer bu
 
 ## 📸 Preview
 
-![Screenshot](<img width="1919" height="957" alt="Screenshot 2026-03-21 134120" src="https://github.com/user-attachments/assets/fa27b8f1-5aba-470e-963e-e61e763594da" />
+![Screenshot](screenshot.png.png
 )
 
 ---
