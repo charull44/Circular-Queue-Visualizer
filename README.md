@@ -39,8 +39,23 @@ An interactive and visually appealing Circular Queue (Ring Buffer) visualizer bu
 
 ---
 
-## ⚙️ How to Run
+## 🚀 Future Improvements
 
-1. Clone the repository
-```bash
-git clone https://github.com/your-username/circular-queue-visualizer.git
+🔄 Circular (ring-shaped) visualization
+🎬 Advanced animations
+🌙 Dark/Light mode toggle
+🔢 Dynamic queue size
+
+---
+
+## 🙌 Contribution
+
+Feel free to fork this repo and improve the UI or add new features!
+
+---
+
+## ⭐ Show your support
+
+If you like this project, give it a ⭐ on GitHub!
+
+## AUTHOR: Charul Bhanarkar
