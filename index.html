@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Circular Queue Visualizer</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #00f7ff, 0 0 20px #00f7ff;
+    }
+
+    .controls {
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      margin-right: 10px;
+      font-size: 16px;
+      background: #111;
+      color: #0ff;
+      box-shadow: 0 0 10px #0ff;
+    }
+
+    button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 10px;
+      margin: 5px;
+      cursor: pointer;
+      background: #111;
+      color: #0ff;
+      font-weight: bold;
+      box-shadow: 0 0 10px #0ff;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+    }
+
+    .queue {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      width: 80%;
+    }
+
+    .box {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 15px;
+      font-size: 20px;
+      background: #111;
+      color: #0ff;
+      box-shadow: 0 0 10px #0ff inset, 0 0 20px #0ff;
+      position: relative;
+      transition: all 0.4s ease;
+    }
+
+    .front {
+      box-shadow: 0 0 20px #00ff88, 0 0 40px #00ff88;
+    }
+
+    .rear {
+      box-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff;
+    }
+
+    .label {
+      position: absolute;
+      bottom: -22px;
+      font-size: 12px;
+      color: #fff;
+    }
+
+    .animate {
+      animation: glowPop 0.4s ease;
+    }
+
+    @keyframes glowPop {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .status {
+      margin-top: 20px;
+      font-size: 18px;
+      text-shadow: 0 0 10px #0ff;
+    }
+
+    .extra {
+      margin-top: 15px;
+    }
+
+    .extra button {
+      background: #220033;
+      color: #ff00ff;
+      box-shadow: 0 0 10px #ff00ff;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>⚡ Circular Queue Visualizer</h1>
+
+  <div class="controls">
+    <input type="number" id="value" placeholder="Enter value">
+    <button onclick="enqueue()">Enqueue</button>
+    <button onclick="dequeue()">Dequeue</button>
+  </div>
+
+  <div class="extra">
+    <button onclick="peek()">Peek</button>
+    <button onclick="resetQueue()">Reset</button>
+  </div>
+
+  <div class="queue" id="queue"></div>
+
+  <div class="status" id="status"></div>
+
+  <script>
+    let capacity = 5;
+    let queue = new Array(capacity).fill(null);
+    let front = 0;
+    let rear = -1;
+    let size = 0;
+
+    function render() {
+      const container = document.getElementById("queue");
+      container.innerHTML = "";
+
+      for (let i = 0; i < capacity; i++) {
+        const div = document.createElement("div");
+        div.classList.add("box");
+
+        if (queue[i] !== null) {
+          div.textContent = queue[i];
+          div.classList.add("animate");
+        }
+
+        if (i === front && size > 0) {
+          div.classList.add("front");
+          const label = document.createElement("div");
+          label.textContent = "F";
+          label.classList.add("label");
+          div.appendChild(label);
+        }
+
+        if (i === rear && size > 0) {
+          div.classList.add("rear");
+          const label = document.createElement("div");
+          label.textContent = "R";
+          label.classList.add("label");
+          div.appendChild(label);
+        }
+
+        container.appendChild(div);
+      }
+    }
+
+    function enqueue() {
+      const val = document.getElementById("value").value;
+      if (val === "") return;
+
+      if (size === capacity) {
+        document.getElementById("status").textContent = "⚠ Queue is Full";
+        return;
+      }
+
+      rear = (rear + 1) % capacity;
+      queue[rear] = val;
+      size++;
+
+      document.getElementById("status").textContent = "✅ Enqueued " + val;
+      render();
+    }
+
+    function dequeue() {
+      if (size === 0) {
+        document.getElementById("status").textContent = "⚠ Queue is Empty";
+        return;
+      }
+
+      const removed = queue[front];
+      queue[front] = null;
+      front = (front + 1) % capacity;
+      size--;
+
+      document.getElementById("status").textContent = "❌ Dequeued " + removed;
+      render();
+    }
+
+    function peek() {
+      if (size === 0) {
+        document.getElementById("status").textContent = "⚠ Queue is Empty";
+        return;
+      }
+      document.getElementById("status").textContent = "👀 Front Element: " + queue[front];
+    }
+
+    function resetQueue() {
+      queue = new Array(capacity).fill(null);
+      front = 0;
+      rear = -1;
+      size = 0;
+      document.getElementById("status").textContent = "🔄 Queue Reset";
+      render();
+    }
+
+    render();
+  </script>
+
+</body>
+</html>
