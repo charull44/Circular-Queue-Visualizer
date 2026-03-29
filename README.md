@@ -64,4 +64,6 @@ Feel free to fork this repo and improve the UI or add new features!
 
 If you like this project, give it a ⭐ on GitHub!
 
+---
+
 ## AUTHOR: Charul Bhanarkar
